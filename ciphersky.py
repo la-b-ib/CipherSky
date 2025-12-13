@@ -2003,55 +2003,6 @@ def sniffer_process(packet_queue, command_event):
     
     if capture_attempts >= max_attempts:
         logger.warning("All packet capture attempts failed. Consider running with elevated privileges.")
-        # Cloud/demo fallback: generate synthetic packets if live capture isn't permitted
-        if os.environ.get('CIPHERSKY_DEMO', '1') == '1':
-            logger.info("Entering DEMO mode: generating synthetic packet stream")
-            def demo_loop():
-                protocols = [(6,'TCP'),(17,'UDP'),(1,'ICMP')]
-                while not command_event.is_set():
-                    now = datetime.now()
-                    proto_num, proto_name = random.choice(protocols)
-                    src_ip = f"192.0.2.{random.randint(1, 254)}"
-                    dst_ip = f"198.51.100.{random.randint(1, 254)}"
-                    pkt = {
-                        'timestamp': now.strftime("%H:%M:%S.%f")[:-3],
-                        'datetime': now,
-                        'src_ip': src_ip,
-                        'dst_ip': dst_ip,
-                        'protocol': proto_num,
-                        'protocol_name': proto_name,
-                        'length': random.randint(60, 1500),
-                        'ttl': random.choice([32, 64, 128]),
-                        'entropy': random.uniform(0.2, 0.95),
-                        'threat_score': random.random() * 0.9,
-                        'anomaly_score': random.random() * 0.6,
-                        'tcp_flags': 'SYN' if proto_name=='TCP' and random.random()>0.7 else '',
-                        'dns_query': '',
-                        'port': random.choice([80,443,53,22,1234,5555]),
-                        'sport': random.randint(1024,65535),
-                        'payload_size': random.randint(0,1200),
-                        'quantum_state': random.choice(['coherent','superposition','entangled','decoherent']),
-                        'decoherence_factor': random.uniform(0.0,1.0),
-                        'flags_list': [],
-                        'is_encrypted': random.random()>0.6,
-                        'is_suspicious': random.random()>0.85,
-                        'latitude': HOME_LAT,
-                        'longitude': HOME_LON,
-                        'country': 'Demo',
-                        'country_code': 'DM'
-                    }
-                    try:
-                        packet_queue.put(pkt, timeout=QUEUE_TIMEOUT)
-                    except queue.Full:
-                        try:
-                            if not packet_queue.empty():
-                                packet_queue.get_nowait()
-                            packet_queue.put(pkt, timeout=0.1)
-                        except Exception:
-                            pass
-                    time.sleep(0.2)
-            t = threading.Thread(target=demo_loop, daemon=True)
-            t.start()
     
     # Cleanup geoip reader
     if geoip_reader:
