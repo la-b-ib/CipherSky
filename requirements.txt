@@ -1,0 +1,56 @@
+# CipherSky Network Defense HUD - Requirements
+# Core dependencies for the application
+
+# Web framework
+streamlit>=1.25.0
+
+# Data manipulation and analysis
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Visualization
+plotly>=5.15.0
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Network packet capture and analysis
+scapy>=2.5.0
+
+# Geolocation
+geoip2>=4.7.0
+
+# Machine learning
+scikit-learn>=1.3.0
+scipy>=1.10.0
+
+# Network analysis and graph theory
+networkx>=3.0
+python-louvain>=0.16
+
+# OSINT and network utilities
+python-whois>=0.8.0
+dnspython>=2.3.0
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Text and visualization utilities
+wordcloud>=1.9.0
+
+# Cryptography
+cryptography>=41.0.0
+
+# Optional dependencies (comment out if not needed)
+# Computer vision
+# opencv-python>=4.8.0
+
+# Memory analysis
+# volatility3>=2.4.0
+
+# Advanced packet analysis
+# pyshark>=0.6.0
+
+# YARA pattern matching
+# yara-python>=4.3.0
+
+# System utilities
+psutil>=5.9.0
