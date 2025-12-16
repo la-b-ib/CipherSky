@@ -5,7 +5,7 @@ Here is a detailed Markdown Mermaid flowchart representing the architecture, dat
 This flowchart visualizes how the application utilizes **Streamlit** for the frontend and **Multiprocessing** for the backend packet sniffing, bridged by a thread-safe Queue.
 
 ```mermaid
-graph TD
+graph LR
     %% Styling Definitions
     classDef ui fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px;
@@ -19,70 +19,59 @@ graph TD
     GatePage --> Stop([Stop Execution])
     Consent -- Yes --> Init[Initialize Session State]
     
-    %% MAIN UI LOOP
-    subgraph UI_Layer [Streamlit UI Frontend]
-        direction TB
-        Init --> Header[Render Header & Dashboard Controls]
-        Header --> Sidebar[Render Sidebar Controls]
-        
-        Sidebar --> Action{User Action}
-        Action -- Start Capture --> SpawnProcess[Spawn Sniffer Process]
-        Action -- Stop Capture --> KillProcess[Terminate Process]
-        Action -- Block IP --> FirewallCall[Call Firewall Controller]
-        Action -- Export --> DataExport[Generate CSV/JSON]
-        
-        Dashboard[Dynamic Dashboard Refresh]
-        Tabs[Render Tabs: Global, Live, Threats, Quantum]
-    end
+    %% UI LAYER
+    Init --> Header[Render Header & Dashboard Controls]
+    Header --> Sidebar[Render Sidebar Controls]
+    
+    Sidebar --> Action{User Action}
+    Action -- Start Capture --> SpawnProcess[Spawn Sniffer Process]
+    Action -- Stop Capture --> KillProcess[Terminate Process]
+    Action -- Block IP --> FirewallCall[Call Firewall Controller]
+    Action -- Export --> DataExport[Generate CSV/JSON]
+    
+    Dashboard[Dynamic Dashboard Refresh]
+    Tabs[Render Tabs: Global, Live, Threats, Quantum]
 
-    %% BACKGROUND PROCESSING
-    subgraph Backend_Process [Multiprocessing Backend]
-        direction TB
-        SpawnProcess --> SnifferFunc(sniffer_process)
-        SnifferFunc --> Scapy[Scapy Sniff / Socket]
-        Scapy --> PacketCallback{Packet Captured?}
-        
-        PacketCallback -- Yes --> ProcessPkt[process_packet]
-        ProcessPkt --> GeoIP[GeoResolver Cache]
-        ProcessPkt --> Entropy[Calc Shannon Entropy]
-        ProcessPkt --> ThreatCalc[ThreatDetector Score]
-        
-        subgraph Quantum_Logic [Quantum Analysis Engine]
-            ThreatCalc --> QState[Calc Quantum State]
-            QState --> Decoherence[Calc Decoherence Factor]
-        end
-        
-        Decoherence --> Enqueue[/Put Data in Queue/]
-    end
+    %% BACKEND PROCESSING
+    SpawnProcess --> SnifferFunc(sniffer_process)
+    SnifferFunc --> Scapy[Scapy Sniff / Socket]
+    Scapy --> PacketCallback{Packet Captured?}
+    
+    PacketCallback -- Yes --> ProcessPkt[process_packet]
+    ProcessPkt --> GeoIP[GeoResolver Cache]
+    ProcessPkt --> Entropy[Calc Shannon Entropy]
+    ProcessPkt --> ThreatCalc[ThreatDetector Score]
+    
+    %% QUANTUM LOGIC (Formerly Nested)
+    ThreatCalc --> QState[Calc Quantum State]
+    QState --> Decoherence[Calc Decoherence Factor]
+    
+    Decoherence --> Enqueue[/Put Data in Queue/]
 
-    %% DATA STORAGE & TRANSFER
-    subgraph State_Memory [Shared Memory & State]
-        Enqueue -.-> Queue[(Multiprocessing Queue)]
-        Queue -.-> Dequeue[/Get Data from Queue/]
-        Dequeue --> SessionState[(st.session_state)]
-        
-        SessionState --> DNS_List[DNS Queries List]
-        SessionState --> Pkt_List[Packet Dataframe]
-        SessionState --> Alert_List[Active Alerts]
-        SessionState --> Blocked_Set[Firewall Blocked IPs]
-    end
+    %% STATE MEMORY
+    Enqueue -.-> Queue[(Multiprocessing Queue)]
+    Queue -.-> Dequeue[/Get Data from Queue/]
+    Dequeue --> SessionState[(st.session_state)]
+    
+    SessionState --> DNS_List[DNS Queries List]
+    SessionState --> Pkt_List[Packet Dataframe]
+    SessionState --> Alert_List[Active Alerts]
+    SessionState --> Blocked_Set[Firewall Blocked IPs]
 
-    %% ANALYSIS & VISUALIZATION
-    subgraph Analytics_Engine [Advanced Analysis & Viz]
-        Dashboard --> Dequeue
-        
-        Pkt_List --> ML_Engine[MLAnomalyEngine]
-        Pkt_List --> Graph_Algos[NetworkTopologyAnalyzer]
-        Pkt_List --> Physics_Sim[PhysicsBasedVisualizations]
-        
-        ML_Engine --> UpdateScores[Update Anomaly Scores]
-        
-        Graph_Algos --> Viz3D_Topo[3D Network Graph]
-        Physics_Sim --> Viz3D_Radar[3D Security Radar]
-        Physics_Sim --> Viz_Spectrum[Spectral Analysis]
-        
-        GeoData[Geo Data] --> Viz_Globe[3D Globe / Map]
-    end
+    %% ANALYTICS ENGINE
+    Dashboard --> Dequeue
+    
+    Pkt_List --> ML_Engine[MLAnomalyEngine]
+    Pkt_List --> Graph_Algos[NetworkTopologyAnalyzer]
+    Pkt_List --> Physics_Sim[PhysicsBasedVisualizations]
+    
+    ML_Engine --> UpdateScores[Update Anomaly Scores]
+    
+    Graph_Algos --> Viz3D_Topo[3D Network Graph]
+    Physics_Sim --> Viz3D_Radar[3D Security Radar]
+    Physics_Sim --> Viz_Spectrum[Spectral Analysis]
+    
+    GeoData[Geo Data] --> Viz_Globe[3D Globe / Map]
 
     %% FINAL RENDERING
     UpdateScores --> Tabs
