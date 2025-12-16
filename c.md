@@ -5,13 +5,29 @@ Here is a detailed Markdown Mermaid flowchart representing the architecture, dat
 This flowchart visualizes how the application utilizes **Streamlit** for the frontend and **Multiprocessing** for the backend packet sniffing, bridged by a thread-safe Queue.
 
 ```mermaid
-graph LR
-    %% Styling Definitions
-    classDef ui fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef storage fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
-    classDef logic fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
-    classDef quantum fill:#333,stroke:#00ffff,stroke-width:2px,color:#fff;
+%%{init: {'flowchart': {'nodeSpacing': 80, 'rankSpacing': 100}}}%%
+graph TD
+    %% --- GLOBAL SETTINGS ---
+    %% 1. Make all connecting lines BOLD and DARK GREY
+    linkStyle default stroke:#263238,stroke-width:3px,fill:none;
+
+    %% --- CLASS DEFINITIONS (Customized with Larger Font) ---
+    %% UI: Blue theme, Bold Text, Thicker Border, Large Font
+    classDef ui fill:#e1f5fe,stroke:#01579b,stroke-width:3px,font-weight:bold,color:#01579b,font-size:16px;
+    
+    %% Process: Orange theme, Bold Text, Large Font
+    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:3px,font-weight:bold,color:#e65100,font-size:16px;
+    
+    %% Storage: Green theme, Bold Text, Large Font
+    classDef storage fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px,font-weight:bold,color:#1b5e20,font-size:16px;
+    
+    %% Logic: Purple theme, Bold Text, Large Font
+    classDef logic fill:#f3e5f5,stroke:#4a148c,stroke-width:3px,font-weight:bold,color:#4a148c,font-size:16px;
+    
+    %% Quantum: Dark theme, Neon Blue Border, White Bold Text, Dashed Border, Large Font
+    classDef quantum fill:#263238,stroke:#00b0ff,stroke-width:4px,color:#fff,font-weight:bold,stroke-dasharray: 5 5,font-size:16px;
+
+    %% --- FLOWCHART START ---
 
     %% ENTRY POINT
     Start([User Launches App]) --> Consent{Consent Agreed?}
@@ -42,16 +58,16 @@ graph LR
     ProcessPkt --> Entropy[Calc Shannon Entropy]
     ProcessPkt --> ThreatCalc[ThreatDetector Score]
     
-    %% QUANTUM LOGIC (Formerly Nested)
+    %% QUANTUM LOGIC (Flattened)
     ThreatCalc --> QState[Calc Quantum State]
     QState --> Decoherence[Calc Decoherence Factor]
     
-    Decoherence --> Enqueue[/Put Data in Queue/]
+    Decoherence ==> Enqueue[/Put Data in Queue/]
 
     %% STATE MEMORY
     Enqueue -.-> Queue[(Multiprocessing Queue)]
     Queue -.-> Dequeue[/Get Data from Queue/]
-    Dequeue --> SessionState[(st.session_state)]
+    Dequeue ==> SessionState[(st.session_state)]
     
     SessionState --> DNS_List[DNS Queries List]
     SessionState --> Pkt_List[Packet Dataframe]
@@ -81,7 +97,7 @@ graph LR
     Viz_Globe --> Tabs
     FirewallCall --> Blocked_Set
 
-    %% Classes
+    %% --- APPLY CLASSES ---
     class Header,Sidebar,Tabs,GatePage ui;
     class SnifferFunc,Scapy,ProcessPkt,GeoIP,Entropy,ThreatCalc process;
     class Queue,SessionState,DNS_List,Pkt_List,Alert_List,Blocked_Set storage;
