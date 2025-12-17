@@ -2,28 +2,8 @@
 
 <samp>
   
-**CipherSky is a defense framework blending physics, ML, and cybersecurity. It captures & analyses packet flows through statistical, geographic & cryptographic lenses detecting anomalies, modeling topologies, and scoring threats into real time verdicts with dashboards and simulations.**
+**CipherSky is a quantum‑enhanced defense HUD for real‑time traffic capture, anomaly detection, and active response. It combines IsolationForest ML, Shannon entropy, and YARA rules for threat scoring across ports, protocols, and geolocation. Coordinated attacks are modeled with quantum entanglement, visualized in a 3D Bloch Sphere and force‑directed particle simulations. A multiprocessing scapy sniffer, cross‑platform blocking (netsh/iptables), and WebGL dashboards (Streamlit, Plotly, PyDeck) deliver adaptive, high‑fidelity verdicts.**
 
-
-
-
-
-
-
-
-
-
-
-
-Here is a comprehensive, technical, and production-ready `README.md` based on the codebase provided. It includes architectural details, installation requirements, and feature breakdowns derived directly from the Python script.
-
----
-
-# 🛡️ CipherSky: Quantum-Enhanced Network Defense HUD
-
-**CipherSky** is a production-grade Network Defense Heads-Up Display (HUD) engineered for real-time traffic analysis, threat detection, and active defense. It combines classical network monitoring with **quantum-inspired algorithms**, **particle physics simulations**, and **machine learning** to visualize network topology and neutralize threats in a high-fidelity 3D interface.
-
----
 
 ## 🚀 Key Features
 
