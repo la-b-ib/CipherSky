@@ -57,10 +57,15 @@
 
 </details>
 
-## ⚠️ Legal Disclaimer
+<details>
 
-**CipherSky is intended for defensive security analysis and educational purposes only.**
 
-* Ensure you have authorization before monitoring network traffic.
-* The developers are not responsible for any misuse of this tool.
-* Usage implies consent to local monitoring laws and regulations.
+**<summary>Legal Disclaimer</summary>** 
+
+```javascript
+
+CipherSky is intended for defensive security analysis and educational purposes only. Ensure you have authorization before monitoring network traffic. The developers are not responsible for any misuse of this tool. Usage implies consent to local monitoring laws and regulations.
+  
+```
+</details>
+
